@@ -1,5 +1,6 @@
 /*
     DIT OOP Assignment 2 Starter Code
+    By Aaron Brien
     =================================
     
     Loads player properties from an xml file
@@ -11,7 +12,7 @@ boolean[] keys = new boolean[526];
 
 void setup()
 {
-  size(1000, 700);
+  size(500, 500);
   setUpPlayerControllers();
 }
 
