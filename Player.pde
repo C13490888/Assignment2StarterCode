@@ -46,21 +46,70 @@ class Player
   
   void update()
   {
-    if (checkKey(up))
+    boolean playerTouchingObstacle = false;
+    for(int i = 0; i < players.size(); i++)
     {
-      pos.y -= 2;
+      for(int j = 0; j < obstacles.size(); j++)
+      {
+        if((players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50) || (players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50))
+        {
+          if (checkKey(up))
+          {
+            if(players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50)
+            {
+              players.get(i).pos.y += 3;
+              playerTouchingObstacle = true;
+            }
+          }
+          if (checkKey(down))
+          {
+            if(players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y + 20 <= obstacles.get(j).pos.y + 50)
+            {
+              players.get(i).pos.y -= 3;
+              playerTouchingObstacle = true;
+            }
+          }
+        }
+        if((players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50) || (players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y +20 <= obstacles.get(j).pos.y + 50))
+        {
+          if (checkKey(left))
+          {
+            if(players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50)
+            {
+              players.get(i).pos.x += 3;
+              playerTouchingObstacle = true;
+            }
+          }    
+          if (checkKey(right))
+          {
+            if(players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50)
+            {
+              players.get(i).pos.x -= 3;
+              playerTouchingObstacle = true;
+            }
+          }
+        }
+      }
     }
-    if (checkKey(down))
+    
+    if(playerTouchingObstacle == false)
     {
-      pos.y += 2;
-    }
-    if (checkKey(left))
-    {
-      pos.x -= 2;
-    }    
-    if (checkKey(right))
-    {
-      pos.x += 2;
+      if (checkKey(up))
+      {
+        pos.y -= 2;
+      }
+      if (checkKey(down))
+      {
+        pos.y += 2;
+      }
+      if (checkKey(left))
+      {
+        pos.x -= 2;
+      }    
+      if (checkKey(right))
+      {
+        pos.x += 2;
+      }
     }
     if (checkKey(start))
     {

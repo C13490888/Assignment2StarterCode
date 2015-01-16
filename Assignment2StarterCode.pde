@@ -21,16 +21,17 @@ void setup()
 
 void draw()
 {
-    background(255);
-  for(Player player:players)
-  {
-    player.update();
-    player.display();
-  }
+  background(255);
   
   for(Obstacle obstacle:obstacles)
   {
     obstacle.display();
+  }
+  
+  for(Player player:players)
+  {
+    player.update();
+    player.display();
   }
   
 }
@@ -75,13 +76,13 @@ char buttonNameToKey(XML xml, String buttonName)
 
 void setUpObstacles()
 {
-  for(int i = 0 ; i < 20; i ++)  
+  for(int i = 0 ; i < 10; i ++)  
   {
     if(i== 0)
     {
       Obstacle o = new Obstacle();
-      o.pos.x = random(0,450);
-      o.pos.y = random(0,450);
+      o.pos.x = random(30,420);
+      o.pos.y = random(30,420);
       obstacles.add(o);
     }
     else
@@ -91,8 +92,8 @@ void setUpObstacles()
       while(playerGapExists == false)
       {
         int gapCounter = 0;
-        o.pos.x = random(0,450);
-        o.pos.y = random(0,450);
+        o.pos.x = random(30,420);
+        o.pos.y = random(30,420);
         for(int j = 0; j < i; j++)
         {
           if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, o.pos.x, o.pos.y) > 100)
