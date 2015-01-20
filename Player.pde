@@ -46,71 +46,73 @@ class Player
   
   void update()
   {
-    boolean playerTouchingObstacle = false;
     for(int i = 0; i < players.size(); i++)
     {
       for(int j = 0; j < obstacles.size(); j++)
       {
         if((players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50) || (players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50))
         {
-          if (checkKey(up))
+          if(players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50)
           {
-            if(players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50)
-            {
-              players.get(i).pos.y += 3;
-              playerTouchingObstacle = true;
-            }
+            players.get(i).pos.y += 2;
           }
-          if (checkKey(down))
+          if(players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y + 20 <= obstacles.get(j).pos.y + 50)
           {
-            if(players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y + 20 <= obstacles.get(j).pos.y + 50)
-            {
-              players.get(i).pos.y -= 3;
-              playerTouchingObstacle = true;
-            }
+            players.get(i).pos.y -= 2;
           }
         }
         if((players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50) || (players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y +20 <= obstacles.get(j).pos.y + 50))
         {
-          if (checkKey(left))
+          if(players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50)
           {
-            if(players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50)
-            {
-              players.get(i).pos.x += 3;
-              playerTouchingObstacle = true;
-            }
+            players.get(i).pos.x += 2;
           }    
-          if (checkKey(right))
+          if(players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50)
           {
-            if(players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50)
-            {
-              players.get(i).pos.x -= 3;
-              playerTouchingObstacle = true;
-            }
+            players.get(i).pos.x -= 2;
           }
         }
       }
     }
     
-    if(playerTouchingObstacle == false)
+    for(int i = 0; i < players.size(); i++)
     {
-      if (checkKey(up))
+      if(players.get(i).pos.x + 20 >= width)
       {
-        pos.y -= 2;
+        players.get(i).pos.x -= 2;
       }
-      if (checkKey(down))
+      if(players.get(i).pos.x <= 0)
       {
-        pos.y += 2;
+        players.get(i).pos.x += 2;
       }
-      if (checkKey(left))
+      if(players.get(i).pos.y + 20 >= height)
       {
-        pos.x -= 2;
-      }    
-      if (checkKey(right))
+        players.get(i).pos.y -= 2;
+      }
+      if(players.get(i).pos.y <= 0)
       {
-        pos.x += 2;
+        players.get(i).pos.y += 2;
       }
     }
+    
+    
+    if (checkKey(up))
+    {
+      pos.y -= 2;
+    }
+    if (checkKey(down))
+    {
+      pos.y += 2;
+    }
+    if (checkKey(left))
+    {
+      pos.x -= 2;
+    }    
+    if (checkKey(right))
+    {
+      pos.x += 2;
+    }
+    
     if (checkKey(start))
     {
       println("Player " + index + " start");
