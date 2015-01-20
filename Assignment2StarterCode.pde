@@ -8,6 +8,7 @@
 */
 
 ArrayList<Player> players = new ArrayList<Player>();
+ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
 boolean[] keys = new boolean[526];
@@ -17,6 +18,7 @@ void setup()
   size(500, 500);
   setUpPlayerControllers();
   setUpObstacles();
+  setUpZombies();
 }
 
 void draw()
@@ -32,6 +34,12 @@ void draw()
   {
     player.update();
     player.display();
+  }
+  
+  for(Zombie zombie:zombies)
+  {
+    zombie.display();
+    zombie.update();
   }
   
 }
@@ -91,17 +99,25 @@ void setUpObstacles()
       Obstacle o = new Obstacle();
       while(playerGapExists == false)
       {
-        int gapCounter = 0;
+        int obstacleGapCounter = 0;
+        int playerGapCounter = 0;
         o.pos.x = random(30,420);
         o.pos.y = random(30,420);
         for(int j = 0; j < i; j++)
         {
           if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, o.pos.x, o.pos.y) > 100)
           {
-            gapCounter++;
+            obstacleGapCounter++;
           }                
         }
-        if(gapCounter == i)
+        for(int j = 0; j < 2; j++)
+        {
+          if(dist(players.get(j).pos.x, players.get(j).pos.y, o.pos.x, o.pos.y) > 50)
+          {
+            playerGapCounter++;
+          }                
+        }
+        if(obstacleGapCounter == i && playerGapCounter == 2)
         {
           playerGapExists = true;
           obstacles.add(o);
@@ -131,5 +147,51 @@ void setUpPlayerControllers()
     p.pos.x = x;
     p.pos.y = 300;
    players.add(p);         
+  }
+}
+
+void setUpZombies()
+{
+  
+  for(int i = 0 ; i < 5; i ++)  
+  {
+    boolean zombieGapExists = false;
+    Zombie z = new Zombie();
+    while(zombieGapExists == false)
+    {
+      int zombieGapCounter = 0;
+      int obstacleGapCounter = 0;
+      int playerGapCounter = 0;
+      z.pos.x = random(0,480);
+      z.pos.y = random(0,480);
+      z.colour = color(0,255,0);
+      z.target = int(random(0,2));
+      for(int j = 0; j < obstacles.size(); j++)
+      {
+        if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, z.pos.x, z.pos.y) > 50)
+        {
+          obstacleGapCounter++;
+        }                
+      }
+      for(int j = 0; j < players.size(); j++)
+      {
+        if(dist(players.get(j).pos.x, players.get(j).pos.y, z.pos.x, z.pos.y) > 50)
+        {
+          playerGapCounter++;
+        }                
+      }
+      for(int j = 0; j < zombies.size(); j++)
+      {
+        if(dist(zombies.get(j).pos.x, zombies.get(j).pos.y, z.pos.x, z.pos.y) > 100)
+        {
+          zombieGapCounter++;
+        }                
+      }
+      if(obstacleGapCounter == obstacles.size() && playerGapCounter == players.size() && zombieGapCounter == zombies.size())
+      {
+        zombieGapExists = true;
+        zombies.add(z);
+      }
+    }    
   }
 }
