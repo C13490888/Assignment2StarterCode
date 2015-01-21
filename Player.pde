@@ -10,10 +10,13 @@ class Player
   char button2;
   int index;
   color colour;
+  float fireRate;
+  int direction;
     
   Player()
   {
     pos = new PVector(width / 2, height / 2);
+    fireRate = 5;
   }
   
   Player(int index, color colour, char up, char down, char left, char right, char start, char button1, char button2)
@@ -99,18 +102,22 @@ class Player
     if (checkKey(up))
     {
       pos.y -= 2;
+      direction = 0;
     }
     if (checkKey(down))
     {
       pos.y += 2;
+      direction = 1;
     }
     if (checkKey(left))
     {
       pos.x -= 2;
+      direction = 2;
     }    
     if (checkKey(right))
     {
       pos.x += 2;
+      direction = 3;
     }
     
     if (checkKey(start))
@@ -119,7 +126,16 @@ class Player
     }
     if (checkKey(button1))
     {
-      println("Player " + index + " button 1");
+      if(rateCounter > (60/fireRate))
+      {
+         Bullet bullet = new Bullet();
+         bullet.x = pos.x;
+         bullet.y = pos.y;
+         bullet.direction = direction;
+         bullets.add(bullet);
+         rateCounter = 0;
+       }
+       
     }
     if (checkKey(button2))
     {

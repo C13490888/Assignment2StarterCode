@@ -3,6 +3,7 @@ class Zombie
   PVector pos;
   color colour;
   int target;
+  float speed;
   
   Zombie()
   {
@@ -22,19 +23,19 @@ class Zombie
     {
       if(players.get(zombies.get(i).target).pos.y < zombies.get(i).pos.y)
       {
-        zombies.get(i).pos.y -= .1;
+        zombies.get(i).pos.y -= zombies.get(i).speed;
       }
       if(players.get(zombies.get(i).target).pos.y > zombies.get(i).pos.y)
       {
-        zombies.get(i).pos.y += .1;
+        zombies.get(i).pos.y += zombies.get(i).speed;
       }
       if(players.get(zombies.get(i).target).pos.x < zombies.get(i).pos.x)
       {
-        zombies.get(i).pos.x -= .1;
+        zombies.get(i).pos.x -= zombies.get(i).speed;
       }    
       if(players.get(zombies.get(i).target).pos.x > zombies.get(i).pos.x)
       {
-        zombies.get(i).pos.x += .1;
+        zombies.get(i).pos.x += zombies.get(i).speed;
       }
       
       
@@ -44,22 +45,22 @@ class Zombie
         {
           if(zombies.get(i).pos.y >= obstacles.get(j).pos.y && zombies.get(i).pos.y <= obstacles.get(j).pos.y + 50)
           {
-            zombies.get(i).pos.y += .1;
+            zombies.get(i).pos.y += zombies.get(i).speed;
           }
           if(zombies.get(i).pos.y +20 >= obstacles.get(j).pos.y && zombies.get(i).pos.y + 20 <= obstacles.get(j).pos.y + 50)
           {
-            zombies.get(i).pos.y -= .1;
+            zombies.get(i).pos.y -= zombies.get(i).speed;
           }
         }
         if((zombies.get(i).pos.y >= obstacles.get(j).pos.y && zombies.get(i).pos.y <= obstacles.get(j).pos.y + 50) || (zombies.get(i).pos.y +20 >= obstacles.get(j).pos.y && zombies.get(i).pos.y +20 <= obstacles.get(j).pos.y + 50))
         {
           if(zombies.get(i).pos.x >= obstacles.get(j).pos.x && zombies.get(i).pos.x <= obstacles.get(j).pos.x + 50)
           {
-            zombies.get(i).pos.x += .1;
+            zombies.get(i).pos.x += zombies.get(i).speed+.1;
           }    
           if(zombies.get(i).pos.x + 20 >= obstacles.get(j).pos.x && zombies.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50)
           {
-            zombies.get(i).pos.x -= .1;
+            zombies.get(i).pos.x -= zombies.get(i).speed+.1;
           }
         }
       }

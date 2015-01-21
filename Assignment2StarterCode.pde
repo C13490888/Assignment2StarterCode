@@ -10,6 +10,8 @@
 ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+float rateCounter = 0;
 
 boolean[] keys = new boolean[526];
 
@@ -42,6 +44,13 @@ void draw()
     zombie.update();
   }
   
+  for(Bullet bullet:bullets)
+  {
+    bullet.display();
+    bullet.move();
+  }
+  
+  rateCounter++;
 }
 
 void keyPressed()
@@ -166,6 +175,7 @@ void setUpZombies()
       z.pos.y = random(0,480);
       z.colour = color(0,255,0);
       z.target = int(random(0,2));
+      z.speed = ((float)random(0.1,0.3));
       for(int j = 0; j < obstacles.size(); j++)
       {
         if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, z.pos.x, z.pos.y) > 50)
