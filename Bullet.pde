@@ -3,14 +3,16 @@ class Bullet
   float x, y;
   int direction;
   color colour;
+  boolean bulletAlive;
   Bullet()
   {
     x = width / 2;
     y = height / 2;
     direction = 0;
-    
+    bulletAlive = true;
   }
-  void move()
+  
+  void update()
   {
     float speed = 10.0f;
     if (direction == 0)
@@ -28,6 +30,30 @@ class Bullet
     if (direction == 3)
     {
       x += speed;
+    }
+    
+    for(int i = 0; i < bullets.size(); i++)
+    {
+      for(int j = 0; j < obstacles.size(); j++)
+      {
+        if(x > obstacles.get(j).pos.x && x < obstacles.get(j).pos.x +50)
+        {
+          if(y > obstacles.get(j).pos.y && y < obstacles.get(j).pos.y + 50)
+          {
+            bulletAlive=false;
+          }
+        }
+      }
+      for(int j = 0; j < zombies.size(); j++)
+      {
+        if(x >= zombies.get(j).pos.x && x <= zombies.get(j).pos.x +20)
+        {
+          if(y >= zombies.get(j).pos.y && y <= zombies.get(j).pos.y + 20)
+          {
+            bulletAlive=false;
+          }
+        }
+      }
     }
     
     

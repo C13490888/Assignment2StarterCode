@@ -49,31 +49,28 @@ class Player
   
   void update()
   {
-    for(int i = 0; i < players.size(); i++)
+    for(int j = 0; j < obstacles.size(); j++)
     {
-      for(int j = 0; j < obstacles.size(); j++)
+      if((pos.x >= obstacles.get(j).pos.x && pos.x <= obstacles.get(j).pos.x + 50) || (pos.x + 20 >= obstacles.get(j).pos.x && pos.x + 20 <= obstacles.get(j).pos.x + 50))
       {
-        if((players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50) || (players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50))
+        if(pos.y >= obstacles.get(j).pos.y && pos.y <= obstacles.get(j).pos.y + 50)
         {
-          if(players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50)
-          {
-            players.get(i).pos.y += 2;
-          }
-          if(players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y + 20 <= obstacles.get(j).pos.y + 50)
-          {
-            players.get(i).pos.y -= 2;
-          }
+          pos.y += 2;
         }
-        if((players.get(i).pos.y >= obstacles.get(j).pos.y && players.get(i).pos.y <= obstacles.get(j).pos.y + 50) || (players.get(i).pos.y +20 >= obstacles.get(j).pos.y && players.get(i).pos.y +20 <= obstacles.get(j).pos.y + 50))
+        if(pos.y +20 >= obstacles.get(j).pos.y && pos.y + 20 <= obstacles.get(j).pos.y + 50)
         {
-          if(players.get(i).pos.x >= obstacles.get(j).pos.x && players.get(i).pos.x <= obstacles.get(j).pos.x + 50)
-          {
-            players.get(i).pos.x += 2;
-          }    
-          if(players.get(i).pos.x + 20 >= obstacles.get(j).pos.x && players.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50)
-          {
-            players.get(i).pos.x -= 2;
-          }
+          pos.y -= 2;
+        }
+      }
+      if((pos.y >= obstacles.get(j).pos.y && pos.y <= obstacles.get(j).pos.y + 50) || (pos.y +20 >= obstacles.get(j).pos.y && pos.y +20 <= obstacles.get(j).pos.y + 50))
+      {
+        if(pos.x >= obstacles.get(j).pos.x && pos.x <= obstacles.get(j).pos.x + 50)
+        {
+          pos.x += 2;
+        }    
+        if(pos.x + 20 >= obstacles.get(j).pos.x && pos.x + 20 <= obstacles.get(j).pos.x + 50)
+        {
+          pos.x -= 2;
         }
       }
     }

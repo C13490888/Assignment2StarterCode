@@ -4,10 +4,12 @@ class Zombie
   color colour;
   int target;
   float speed;
+  boolean zombieAlive;
   
   Zombie()
   {
    pos = new PVector(width / 2, height / 2);
+   zombieAlive = true;
   }
   
   void display()
@@ -38,6 +40,17 @@ class Zombie
         zombies.get(i).pos.x += zombies.get(i).speed;
       }
       
+      for(int j = 0; j < bullets.size(); j++)
+      {
+        if(pos.x >= bullets.get(j).x)
+        {
+          if(pos.y >= bullets.get(j).y)
+          {
+            zombieAlive=false;
+          }
+        }
+      }
+      
       
       for(int j = 0; j < obstacles.size(); j++)
       {
@@ -57,7 +70,7 @@ class Zombie
           if(zombies.get(i).pos.x >= obstacles.get(j).pos.x && zombies.get(i).pos.x <= obstacles.get(j).pos.x + 50)
           {
             zombies.get(i).pos.x += zombies.get(i).speed+.1;
-          }    
+          } 
           if(zombies.get(i).pos.x + 20 >= obstacles.get(j).pos.x && zombies.get(i).pos.x + 20 <= obstacles.get(j).pos.x + 50)
           {
             zombies.get(i).pos.x -= zombies.get(i).speed+.1;

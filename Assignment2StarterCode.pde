@@ -17,7 +17,7 @@ boolean[] keys = new boolean[526];
 
 void setup()
 {
-  size(500, 500);
+  size(1244, 1024);
   setUpPlayerControllers();
   setUpObstacles();
   setUpZombies();
@@ -38,16 +38,24 @@ void draw()
     player.display();
   }
   
-  for(Zombie zombie:zombies)
+  for(int i = 0; i < zombies.size(); i++)
   {
-    zombie.display();
-    zombie.update();
+    zombies.get(i).display();
+    zombies.get(i).update();
+    if(!zombies.get(i).zombieAlive)
+    {
+      zombies.remove(i);
+    }
   }
   
-  for(Bullet bullet:bullets)
+  for(int i = 0; i < bullets.size(); i++)
   {
-    bullet.display();
-    bullet.move();
+    bullets.get(i).display();
+    bullets.get(i).update();
+    if(!bullets.get(i).bulletAlive)
+    {
+      bullets.remove(i);
+    }
   }
   
   rateCounter++;
@@ -93,13 +101,13 @@ char buttonNameToKey(XML xml, String buttonName)
 
 void setUpObstacles()
 {
-  for(int i = 0 ; i < 10; i ++)  
+  for(int i = 0 ; i < 50; i ++)  
   {
     if(i== 0)
     {
       Obstacle o = new Obstacle();
-      o.pos.x = random(30,420);
-      o.pos.y = random(30,420);
+      o.pos.x = random(30,width - 80);
+      o.pos.y = random(30,width - 80);
       obstacles.add(o);
     }
     else
@@ -110,8 +118,8 @@ void setUpObstacles()
       {
         int obstacleGapCounter = 0;
         int playerGapCounter = 0;
-        o.pos.x = random(30,420);
-        o.pos.y = random(30,420);
+        o.pos.x = random(30,width - 80);
+        o.pos.y = random(30,width - 80);
         for(int j = 0; j < i; j++)
         {
           if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, o.pos.x, o.pos.y) > 100)
