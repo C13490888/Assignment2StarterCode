@@ -7,6 +7,11 @@
     See: https://github.com/skooter500/DT228-OOP 
 */
 
+boolean devMode = false;
+boolean sketchFullScreen() {
+  return ! devMode;
+}
+
 ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
@@ -17,7 +22,14 @@ boolean[] keys = new boolean[526];
 
 void setup()
 {
-  size(1244, 1024);
+  if (devMode)
+  {
+    size(800, 600);
+  }
+  else
+  {
+    size(displayWidth, displayHeight);
+  }
   setUpPlayerControllers();
   setUpObstacles();
   setUpZombies();
@@ -119,7 +131,7 @@ void setUpObstacles()
         int obstacleGapCounter = 0;
         int playerGapCounter = 0;
         o.pos.x = random(30,width - 80);
-        o.pos.y = random(30,width - 80);
+        o.pos.y = random(30,height - 80);
         for(int j = 0; j < i; j++)
         {
           if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, o.pos.x, o.pos.y) > 100)
