@@ -5,7 +5,19 @@
     
     Loads player properties from an xml file
     See: https://github.com/skooter500/DT228-OOP 
+    Credit for music to: Vulcan Kijder and John Murphy.
+    PS: When either player dies turn them into a zombie.
 */
+PImage[] Player1 = new PImage[4];
+PImage[] Player2 = new PImage[4];
+PImage[] Zombie = new PImage[4];
+import ddf.minim.*;
+import ddf.minim.signals.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+Minim minim;
+AudioPlayer player;
+AudioInput input;
 
 boolean devMode = false;
 boolean sketchFullScreen() {
@@ -16,7 +28,8 @@ ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-float rateCounter = 0;
+float zombieSpeed = .1;
+float zombieSpawnRate = 90;
 
 boolean[] keys = new boolean[526];
 
@@ -30,6 +43,17 @@ void setup()
   {
     size(displayWidth, displayHeight);
   }
+  
+  for(int i = 0; i < 4; i++)
+  {
+    Player1[i] = loadImage(i + "Player1.png");
+    Player2[i] = loadImage(i + "Player2.png");
+    Zombie[i] = loadImage(i + "Zombie.png"); 
+  }
+  minim = new Minim(this);
+  player = minim.loadFile("houseinheartbeat.mp3");
+  input = minim.getLineIn();
+  player.play();
   setUpPlayerControllers();
   setUpObstacles();
   setUpZombies();
@@ -70,7 +94,20 @@ void draw()
     }
   }
   
-  rateCounter++;
+  if(frameCount % zombieSpawnRate == 0)
+  {
+    setUpZombies();
+  //  zombieSpawnRate /= 1.5;
+  }
+  
+  if(frameCount % 90 == 0)
+  {
+    zombieSpeed *= 1.05;
+    if(zombieSpeed >= 1)
+    {
+      zombieSpeed = 1;
+    }
+  }
 }
 
 void keyPressed()
@@ -172,17 +209,30 @@ void setUpPlayerControllers()
             i
             , colarray[i]
             , playerXML);
-    int x = (i + 1) * gap;
+   int x = (i + 1) * gap;
     p.pos.x = x;
     p.pos.y = 300;
-   players.add(p);         
+    for(int j = 0; j < 4; j++)
+    {
+      if(i == 0)
+      {
+        p.player[j] = Player1[j];
+        p.Player = Player1[0];
+      }
+      if(i == 1)
+      {
+        p.player[j] = Player2[j];
+        p.Player = Player2[0];
+      }
+    }
+    players.add(p);         
   }
 }
 
 void setUpZombies()
 {
   
-  for(int i = 0 ; i < 5; i ++)  
+  for(int i = 0 ; i < 1; i ++)  
   {
     boolean zombieGapExists = false;
     Zombie z = new Zombie();
@@ -191,11 +241,11 @@ void setUpZombies()
       int zombieGapCounter = 0;
       int obstacleGapCounter = 0;
       int playerGapCounter = 0;
-      z.pos.x = random(0,480);
-      z.pos.y = random(0,480);
+      z.pos.x = random(0,width-20);
+      z.pos.y = random(0,height-20);
       z.colour = color(0,255,0);
       z.target = int(random(0,2));
-      z.speed = ((float)random(0.1,0.3));
+      z.speed = ((float)random(zombieSpeed,zombieSpeed*2));
       for(int j = 0; j < obstacles.size(); j++)
       {
         if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, z.pos.x, z.pos.y) > 50)
@@ -220,6 +270,11 @@ void setUpZombies()
       if(obstacleGapCounter == obstacles.size() && playerGapCounter == players.size() && zombieGapCounter == zombies.size())
       {
         zombieGapExists = true;
+        for(int j = 0; j < 4; j++)
+        {
+          z.zombie[j] = Zombie[j];
+          z.Zombie = Zombie[0];
+        }
         zombies.add(z);
       }
     }    

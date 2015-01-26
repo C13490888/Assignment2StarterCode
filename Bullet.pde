@@ -46,11 +46,12 @@ class Bullet
       }
       for(int j = 0; j < zombies.size(); j++)
       {
-        if(x >= zombies.get(j).pos.x && x <= zombies.get(j).pos.x +20)
+        if(x+1 >= zombies.get(j).pos.x && x-1 <= zombies.get(j).pos.x +20)
         {
-          if(y >= zombies.get(j).pos.y && y <= zombies.get(j).pos.y + 20)
+          if(y+1 >= zombies.get(j).pos.y && y-1 <= zombies.get(j).pos.y + 20)
           {
             bulletAlive=false;
+            zombies.get(j).zombieAlive=false;
           }
         }
       }
@@ -80,7 +81,7 @@ class Bullet
     pushMatrix();
     fill(0);
     stroke(0);
-    translate(x, y);
+    translate(x,y);
     if(direction == 0 || direction == 1)
     { 
       line(0, - 5, 0, 5);

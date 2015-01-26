@@ -12,11 +12,16 @@ class Player
   color colour;
   float fireRate;
   int direction;
+  PImage Player;
+  PImage[] player = new PImage[4];
+  float rateCounter;
     
   Player()
   {
     pos = new PVector(width / 2, height / 2);
     fireRate = 5;
+    rateCounter = 0;
+    direction = 0;
   }
   
   Player(int index, color colour, char up, char down, char left, char right, char start, char button1, char button2)
@@ -75,24 +80,21 @@ class Player
       }
     }
     
-    for(int i = 0; i < players.size(); i++)
+    if(pos.x + 20 >= width)
     {
-      if(players.get(i).pos.x + 20 >= width)
-      {
-        players.get(i).pos.x -= 2;
-      }
-      if(players.get(i).pos.x <= 0)
-      {
-        players.get(i).pos.x += 2;
-      }
-      if(players.get(i).pos.y + 20 >= height)
-      {
-        players.get(i).pos.y -= 2;
-      }
-      if(players.get(i).pos.y <= 0)
-      {
-        players.get(i).pos.y += 2;
-      }
+      pos.x -= 2;
+    }
+    if(pos.x <= 0)
+    {
+      pos.x += 2;
+    }
+    if(pos.y + 20 >= height)
+    {
+      pos.y -= 2;
+    }
+    if(pos.y <= 0)
+    {
+      pos.y += 2;
     }
     
     
@@ -100,21 +102,25 @@ class Player
     {
       pos.y -= 2;
       direction = 0;
+      Player = player[0];
     }
     if (checkKey(down))
     {
       pos.y += 2;
       direction = 1;
+      Player = player[1];
     }
     if (checkKey(left))
     {
       pos.x -= 2;
       direction = 2;
+      Player = player[2];
     }    
     if (checkKey(right))
     {
       pos.x += 2;
       direction = 3;
+      Player = player[3];
     }
     
     if (checkKey(start))
@@ -125,25 +131,45 @@ class Player
     {
       if(rateCounter > (60/fireRate))
       {
-         Bullet bullet = new Bullet();
-         bullet.x = pos.x;
-         bullet.y = pos.y;
-         bullet.direction = direction;
-         bullets.add(bullet);
-         rateCounter = 0;
+        Bullet bullet = new Bullet();
+        if(direction == 0)
+        { 
+          bullet.x = pos.x +10;
+          bullet.y = pos.y;
+        }
+        if(direction == 1)
+        {
+          bullet.x = pos.x + 10;
+          bullet.y = pos.y + 20;
+        }
+        if(direction == 2)
+        {
+          bullet.x = pos.x;
+          bullet.y = pos.y + 10;
+        }
+        if(direction == 3)
+        {
+          bullet.x = pos.x + 20;
+          bullet.y = pos.y + 10;
+        }
+        bullet.direction = direction;
+        bullets.add(bullet);
+        rateCounter = 0;
        }
-       
-    }
+     }
+    
     if (checkKey(button2))
     {
       println("Player " + index + " butt2");
-    }    
+    }   
+    rateCounter++; 
   }
   
   void display()
   {    
+    
     stroke(colour);
-    fill(colour);    
-    rect(pos.x, pos.y, 20, 20);
+    fill(colour); 
+    image(Player, pos.x, pos.y, 20, 20);
   }  
 }

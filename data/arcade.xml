@@ -14,9 +14,9 @@
 		<down>k</down>
 		<left>j</left>
 		<right>l</right>
-		<start>p</start>
+		<start>u</start>
 		<insertcoin>5</insertcoin>
-		<button1>[</button1>
-		<button2>]</button2>
+		<button1>o</button1>
+		<button2>p</button2>
 	</player>
 </arcade>	
