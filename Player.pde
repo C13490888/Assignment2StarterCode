@@ -71,11 +71,11 @@ class Player
       {
         if(pos.x >= obstacles.get(j).pos.x && pos.x <= obstacles.get(j).pos.x + 50)
         {
-          pos.x += 2;
+          pos.x += 2 +.1;
         }    
         if(pos.x + 20 >= obstacles.get(j).pos.x && pos.x + 20 <= obstacles.get(j).pos.x + 50)
         {
-          pos.x -= 2;
+          pos.x -= 2 +.1;
         }
       }
     }

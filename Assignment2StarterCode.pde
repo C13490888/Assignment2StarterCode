@@ -76,8 +76,8 @@ void draw()
   
   for(int i = 0; i < zombies.size(); i++)
   {
-    zombies.get(i).display();
     zombies.get(i).update();
+    zombies.get(i).display();
     if(!zombies.get(i).zombieAlive)
     {
       zombies.remove(i);
