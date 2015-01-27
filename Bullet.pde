@@ -36,9 +36,9 @@ class Bullet
     {
       for(int j = 0; j < obstacles.size(); j++)
       {
-        if(x > obstacles.get(j).pos.x && x < obstacles.get(j).pos.x +50)
+        if(x+1 >= obstacles.get(j).pos.x && x-1 <= obstacles.get(j).pos.x +50)
         {
-          if(y > obstacles.get(j).pos.y && y < obstacles.get(j).pos.y + 50)
+          if(y+1 >= obstacles.get(j).pos.y && y-1 <= obstacles.get(j).pos.y + 50)
           {
             bulletAlive=false;
           }
@@ -52,6 +52,29 @@ class Bullet
           {
             bulletAlive=false;
             zombies.get(j).zombieAlive=false;
+          }
+        }
+      }
+      for(int j = 0; j < players.size(); j++)
+      {
+        if(x+1 >= players.get(j).pos.x && x-1 <= players.get(j).pos.x +20)
+        {
+          if(y+1 >= players.get(j).pos.y && y-1 <= players.get(j).pos.y + 20)
+          {
+            bulletAlive=false;
+            if(players.get(j).playerAlive==false)
+            {
+              if(players.get(j).playerTarget == j)
+              {
+                players.get(j).playerToZombieSet = false;
+                players.get(j).targetsSwitched = false;
+              }
+            }
+            else
+            {
+              players.get(j).playerAlive=false;
+              players.get(j).Player = Zombie[0];
+            }
           }
         }
       }

@@ -29,8 +29,8 @@ ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 float zombieSpeed = .1;
-float zombieSpawnRate = 90;
-
+float zombieSpawnRate = 1;
+float spawnCounter = 0;
 boolean[] keys = new boolean[526];
 
 void setup()
@@ -68,10 +68,10 @@ void draw()
     obstacle.display();
   }
   
-  for(Player player:players)
+  for(int i = 0; i < players.size(); i++)
   {
-    player.update();
-    player.display();
+    players.get(i).update();
+    players.get(i).display();
   }
   
   for(int i = 0; i < zombies.size(); i++)
@@ -94,20 +94,18 @@ void draw()
     }
   }
   
-  if(frameCount % zombieSpawnRate == 0)
+  if(spawnCounter > (60/zombieSpawnRate))
   {
     setUpZombies();
-  //  zombieSpawnRate /= 1.5;
-  }
-  
-  if(frameCount % 90 == 0)
-  {
-    zombieSpeed *= 1.05;
-    if(zombieSpeed >= 1)
+    zombieSpawnRate *= 1.001;
+    spawnCounter = 0;
+    zombieSpeed *= 1.01;
+    if(zombieSpeed >= .8)
     {
       zombieSpeed = 1;
     }
   }
+  spawnCounter++;
 }
 
 void keyPressed()
@@ -255,7 +253,7 @@ void setUpZombies()
       }
       for(int j = 0; j < players.size(); j++)
       {
-        if(dist(players.get(j).pos.x, players.get(j).pos.y, z.pos.x, z.pos.y) > 50)
+        if(dist(players.get(j).pos.x, players.get(j).pos.y, z.pos.x, z.pos.y) > 150)
         {
           playerGapCounter++;
         }                

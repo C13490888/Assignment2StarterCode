@@ -52,22 +52,6 @@ class Zombie
     }
     
     
-    if(target == 0)
-    {
-      if(dist(pos.x, pos.y, players.get(1).pos.x, players.get(1).pos.y) < dist(pos.x, pos.y, players.get(target).pos.x, players.get(target).pos.y)*1.5)
-      {
-        target = 1;
-      }
-    }
-    if(target == 1)
-    {
-      if(dist(pos.x, pos.y, players.get(0).pos.x, players.get(0).pos.y) < dist(pos.x, pos.y, players.get(target).pos.x, players.get(target).pos.y)*1.5)
-      {
-        target = 0;
-      }
-    }
-    
-    
     for(int j = 0; j < obstacles.size(); j++)
     {
       if((pos.x >= obstacles.get(j).pos.x && pos.x <= obstacles.get(j).pos.x + 50) || (pos.x + 20 >= obstacles.get(j).pos.x && pos.x + 20 <= obstacles.get(j).pos.x + 50))
