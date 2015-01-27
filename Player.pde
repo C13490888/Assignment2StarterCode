@@ -1,6 +1,5 @@
-class Player
+class Player extends GameObject
 {
-  PVector pos;
   char up;
   char down;
   char left;
@@ -9,16 +8,10 @@ class Player
   char button1;
   char button2;
   int index;
-  color colour;
   float fireRate;
-  int direction;
-  PImage Player;
-  PImage[] player = new PImage[4];
   float rateCounter;
-  int speed;
   boolean playerAlive;
   boolean playerToZombieSet;
-  boolean targetsSwitched;
   int playerTarget;
     
   Player()
@@ -30,7 +23,6 @@ class Player
     speed = 2;
     playerAlive = true;
     playerToZombieSet = false;
-    targetsSwitched = false;
   }
   
   Player(int index, color colour, char up, char down, char left, char right, char start, char button1, char button2)
@@ -112,25 +104,40 @@ class Player
       {
         pos.y -= speed;
         direction = 0;
-        Player = player[0];
+        Sprite = sprite[0];
       }
       if (checkKey(down))
       {
         pos.y += speed;
         direction = 1;
-        Player = player[1];
+        Sprite = sprite[1];
       }
       if (checkKey(left))
       {
         pos.x -= speed;
         direction = 2;
-        Player = player[2];
+        Sprite = sprite[2];
       }    
       if (checkKey(right))
       {
         pos.x += speed;
         direction = 3;
-        Player = player[3];
+        Sprite = sprite[3];
+      }
+      
+      for(int j = 0; j < bullets.size(); j++)
+      {
+        if(bullets.get(j).x+1 >= pos.x && bullets.get(j).x-1 <= pos.x +20)
+        {
+          if(bullets.get(j).y+1 >= pos.y && bullets.get(j).y-1 <= pos.y + 20)
+          {
+            {
+              bullets.get(j).bulletAlive = false;
+              playerAlive=false;
+              Sprite = Zombie[0];
+            }
+          }
+        }
       }
       
       for(int j = 0; j < zombies.size(); j++)
@@ -140,12 +147,12 @@ class Player
           if(pos.y >= zombies.get(j).pos.y && pos.y <= zombies.get(j).pos.y + 20)
           {
             playerAlive = false;
-            Player = Zombie[0];
+            Sprite = Zombie[0];
           }
           if(pos.y +20 >= zombies.get(j).pos.y && pos.y + 20 <= zombies.get(j).pos.y + 20)
           {
             playerAlive = false;
-            Player = Zombie[0];
+            Sprite = Zombie[0];
           }
         }
         if((pos.y >= zombies.get(j).pos.y && pos.y <= zombies.get(j).pos.y + 20) || (pos.y +20 >= zombies.get(j).pos.y && pos.y +20 <= zombies.get(j).pos.y + 0))
@@ -153,12 +160,12 @@ class Player
           if(pos.x >= zombies.get(j).pos.x && pos.x <= zombies.get(j).pos.x + 20)
           {
             playerAlive = false;
-            Player = Zombie[0];
+            Sprite = Zombie[0];
           } 
           if(pos.x + 20 >= zombies.get(j).pos.x && pos.x + 20 <= zombies.get(j).pos.x + 20)
           {
             playerAlive = false;
-            Player = Zombie[0];
+            Sprite = Zombie[0];
           }
         }
         if(zombies.get(j).target == 0)
@@ -230,19 +237,17 @@ class Player
       {
         for(int i = 0; i < zombies.size(); i++)
         {
-          if(!targetsSwitched)
+          if(zombies.get(i).target == index)
           {
-            if(zombies.get(i).target == 0)
+            if(index == 0)
             {
               zombies.get(i).target = 1;
               playerTarget  = 1;
-              targetsSwitched = true;
             }
-            else if(zombies.get(i).target == 1)
+            else if(index == 1)
             {
               zombies.get(i).target = 0;
-              playerTarget = 0;
-              targetsSwitched = true;
+              playerTarget  = 0;
             }
           }
         }
@@ -288,25 +293,25 @@ class Player
       {
         pos.y -= speed;
         direction = 0;
-        Player = Zombie[0];
+        Sprite = Zombie[0];
       }
       if (checkKey(down))
       {
         pos.y += speed;
         direction = 1;
-        Player = Zombie[1];
+        Sprite = Zombie[1];
       }
       if (checkKey(left))
       {
         pos.x -= speed;
         direction = 2;
-        Player = Zombie[2];
+        Sprite = Zombie[2];
       }    
       if (checkKey(right))
       {
         pos.x += speed;
         direction = 3;
-        Player = Zombie[3];
+        Sprite = Zombie[3];
       }
       
       if (checkKey(start))
@@ -319,12 +324,12 @@ class Player
         if(pos.y >= players.get(playerTarget).pos.y && pos.y <= players.get(playerTarget).pos.y + 20)
         {
           players.get(playerTarget).playerAlive = false;
-          players.get(playerTarget).Player = Zombie[0];
+          players.get(playerTarget).Sprite = Zombie[0];
         }
         if(pos.y +20 >= players.get(playerTarget).pos.y && pos.y + 20 <= players.get(playerTarget).pos.y + 20)
         {
           players.get(playerTarget).playerAlive = false;
-          players.get(playerTarget).Player = Zombie[0];
+          players.get(playerTarget).Sprite = Zombie[0];
         }
       }
       if((pos.y >= players.get(playerTarget).pos.y && pos.y <= players.get(playerTarget).pos.y + 20) || (pos.y +20 >= players.get(playerTarget).pos.y && pos.y +20 <= players.get(playerTarget).pos.y + 0))
@@ -332,14 +337,29 @@ class Player
         if(pos.x >= players.get(playerTarget).pos.x && pos.x <= players.get(playerTarget).pos.x + 20)
         {
           players.get(playerTarget).playerAlive = false;
-          players.get(playerTarget).Player = Zombie[0];
+          players.get(playerTarget).Sprite = Zombie[0];
         } 
         if(pos.x + 20 >= players.get(playerTarget).pos.x && pos.x + 20 <= players.get(playerTarget).pos.x + 20)
         {
           players.get(playerTarget).playerAlive = false;
-          players.get(playerTarget).Player = Zombie[0];
+          players.get(playerTarget).Sprite = Zombie[0];
         }
       }
+      
+      for(int j = 0; j < bullets.size(); j++)
+      {
+        if(bullets.get(j).x+1 >= pos.x && bullets.get(j).x-1 <= pos.x +20)
+        {
+          if(bullets.get(j).y+1 >= pos.y && bullets.get(j).y-1 <= pos.y + 20)
+          {
+            {
+              bullets.get(j).bulletAlive = false;
+              playerToZombieSet = false;
+            }
+          }
+        }
+      }
+      
     }
   }
   
@@ -348,6 +368,6 @@ class Player
     
     stroke(colour);
     fill(colour);
-    image(Player, pos.x, pos.y, 20, 20);
+    image(Sprite, pos.x, pos.y, 20, 20);
   }  
 }

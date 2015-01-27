@@ -1,12 +1,7 @@
-class Zombie
+class Zombie extends GameObject
 {
-  PVector pos;
   color colour;
   int target;
-  float speed;
-  int direction;
-  PImage Zombie;
-  PImage[] zombie = new PImage[4];
   boolean zombieAlive;
   
   Zombie()
@@ -21,7 +16,7 @@ class Zombie
   {    
     stroke(colour);
     fill(colour);    
-    image(Zombie,pos.x, pos.y, 20, 20);
+    image(Sprite,pos.x, pos.y, 20, 20);
   } 
   
   void update()
@@ -30,25 +25,25 @@ class Zombie
     {
       pos.x -= speed;
       direction = 2;
-      Zombie = zombie[2];
+      Sprite = sprite[2];
     }    
     if(players.get(target).pos.x >= pos.x)
     {
       pos.x += speed;
       direction = 3;
-      Zombie = zombie[3];
+      Sprite = sprite[3];
     }
     if(players.get(target).pos.y <= pos.y)
     {
       pos.y -= speed;
       direction = 0;
-      Zombie = zombie[0];
+      Sprite = sprite[0];
     }
     if(players.get(target).pos.y >= pos.y)
     {
       pos.y += speed;
       direction = 1;
-      Zombie = zombie[1];
+      Sprite = sprite[1];
     }
     
     

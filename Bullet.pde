@@ -1,8 +1,6 @@
-class Bullet
+class Bullet extends GameObject
 {
   float x, y;
-  int direction;
-  color colour;
   boolean bulletAlive;
   Bullet()
   {
@@ -32,50 +30,24 @@ class Bullet
       x += speed;
     }
     
-    for(int i = 0; i < bullets.size(); i++)
+    for(int j = 0; j < obstacles.size(); j++)
     {
-      for(int j = 0; j < obstacles.size(); j++)
+      if(x+1 >= obstacles.get(j).pos.x && x-1 <= obstacles.get(j).pos.x +50)
       {
-        if(x+1 >= obstacles.get(j).pos.x && x-1 <= obstacles.get(j).pos.x +50)
+        if(y+1 >= obstacles.get(j).pos.y && y-1 <= obstacles.get(j).pos.y + 50)
         {
-          if(y+1 >= obstacles.get(j).pos.y && y-1 <= obstacles.get(j).pos.y + 50)
-          {
-            bulletAlive=false;
-          }
+          bulletAlive=false;
         }
       }
-      for(int j = 0; j < zombies.size(); j++)
+    }
+    for(int j = 0; j < zombies.size(); j++)
+    {
+      if(x+1 >= zombies.get(j).pos.x && x-1 <= zombies.get(j).pos.x +20)
       {
-        if(x+1 >= zombies.get(j).pos.x && x-1 <= zombies.get(j).pos.x +20)
+        if(y+1 >= zombies.get(j).pos.y && y-1 <= zombies.get(j).pos.y + 20)
         {
-          if(y+1 >= zombies.get(j).pos.y && y-1 <= zombies.get(j).pos.y + 20)
-          {
-            bulletAlive=false;
-            zombies.get(j).zombieAlive=false;
-          }
-        }
-      }
-      for(int j = 0; j < players.size(); j++)
-      {
-        if(x+1 >= players.get(j).pos.x && x-1 <= players.get(j).pos.x +20)
-        {
-          if(y+1 >= players.get(j).pos.y && y-1 <= players.get(j).pos.y + 20)
-          {
-            bulletAlive=false;
-            if(players.get(j).playerAlive==false)
-            {
-              if(players.get(j).playerTarget == j)
-              {
-                players.get(j).playerToZombieSet = false;
-                players.get(j).targetsSwitched = false;
-              }
-            }
-            else
-            {
-              players.get(j).playerAlive=false;
-              players.get(j).Player = Zombie[0];
-            }
-          }
+          bulletAlive=false;
+          zombies.get(j).zombieAlive=false;
         }
       }
     }

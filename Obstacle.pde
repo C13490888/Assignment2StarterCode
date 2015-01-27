@@ -1,6 +1,5 @@
-class Obstacle
+class Obstacle extends GameObject
 {
-  PVector pos;
   
   Obstacle()
   {

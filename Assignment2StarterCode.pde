@@ -11,6 +11,7 @@
 PImage[] Player1 = new PImage[4];
 PImage[] Player2 = new PImage[4];
 PImage[] Zombie = new PImage[4];
+PImage[] PowerUp = new PImage[4];
 import ddf.minim.*;
 import ddf.minim.signals.*;
 import ddf.minim.analysis.*;
@@ -28,10 +29,14 @@ ArrayList<Player> players = new ArrayList<Player>();
 ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-float zombieSpeed = .1;
-float zombieSpawnRate = 1;
+ArrayList<PowerUp> powerups = new ArrayList<PowerUp>();
+float zombieSpeed = .1f;
+float zombieSpawnRate = 1f;
 float spawnCounter = 0;
 boolean[] keys = new boolean[526];
+int powerupCounter = 0;
+int powerGenerator = 500;
+int powerPicker = 0;
 
 void setup()
 {
@@ -48,7 +53,8 @@ void setup()
   {
     Player1[i] = loadImage(i + "Player1.png");
     Player2[i] = loadImage(i + "Player2.png");
-    Zombie[i] = loadImage(i + "Zombie.png"); 
+    Zombie[i] = loadImage(i + "Zombie.png");
+    PowerUp[i] =  loadImage(i + "powerUp.png");
   }
   minim = new Minim(this);
   player = minim.loadFile("houseinheartbeat.mp3");
@@ -84,6 +90,16 @@ void draw()
     }
   }
   
+  for(int i = 0; i < powerups.size(); i++)
+  {
+    powerups.get(i).update();
+    powerups.get(i).display();
+    if(!powerups.get(i).powerUpAlive)
+    {
+      powerups.remove(i);
+    }
+  }
+  
   for(int i = 0; i < bullets.size(); i++)
   {
     bullets.get(i).display();
@@ -106,6 +122,12 @@ void draw()
     }
   }
   spawnCounter++;
+  powerPicker = int(random(0,1001));
+  if(powerPicker == powerGenerator)
+  {
+    spawnPowerUp();
+  }
+  
 }
 
 void keyPressed()
@@ -214,13 +236,13 @@ void setUpPlayerControllers()
     {
       if(i == 0)
       {
-        p.player[j] = Player1[j];
-        p.Player = Player1[0];
+        p.sprite[j] = Player1[j];
+        p.Sprite = Player1[0];
       }
       if(i == 1)
       {
-        p.player[j] = Player2[j];
-        p.Player = Player2[0];
+        p.sprite[j] = Player2[j];
+        p.Sprite = Player2[0];
       }
     }
     players.add(p);         
@@ -270,10 +292,62 @@ void setUpZombies()
         zombieGapExists = true;
         for(int j = 0; j < 4; j++)
         {
-          z.zombie[j] = Zombie[j];
-          z.Zombie = Zombie[0];
+          z.sprite[j] = Zombie[j];
+          z.Sprite = Zombie[0];
         }
         zombies.add(z);
+      }
+    }    
+  }
+}
+
+void spawnPowerUp()
+{
+  for(int i = 0 ; i < 1; i ++)  
+  {
+    boolean powerGapExists = false;
+    PowerUp p = new PowerUp();
+    while(powerGapExists == false)
+    {
+      int zombieGapCounter = 0;
+      int obstacleGapCounter = 0;
+      int playerGapCounter = 0;
+      int powerGapCounter = 0;
+      p.pos.x = random(0,width-20);
+      p.pos.y = random(0,height-20);
+      p.Sprite = PowerUp[int(random(0,4))];
+      for(int j = 0; j < obstacles.size(); j++)
+      {
+        if(dist(obstacles.get(j).pos.x, obstacles.get(j).pos.y, p.pos.x, p.pos.y) > 50)
+        {
+          obstacleGapCounter++;
+        }                
+      }
+      for(int j = 0; j < players.size(); j++)
+      {
+        if(dist(players.get(j).pos.x, players.get(j).pos.y, p.pos.x, p.pos.y) > 150)
+        {
+          playerGapCounter++;
+        }                
+      }
+      for(int j = 0; j < zombies.size(); j++)
+      {
+        if(dist(zombies.get(j).pos.x, zombies.get(j).pos.y, p.pos.x, p.pos.y) > 100)
+        {
+          zombieGapCounter++;
+        }                
+      }
+      for(int j = 0; j < powerups.size(); j++)
+      {
+        if(dist(powerups.get(j).pos.x, powerups.get(j).pos.y, p.pos.x, p.pos.y) > 500)
+        {
+          powerGapCounter++;
+        }   
+      }
+      if(obstacleGapCounter == obstacles.size() && playerGapCounter == players.size() && zombieGapCounter == zombies.size() && powerGapCounter == powerups.size())
+      {
+        powerGapExists = true;
+        powerups.add(p);
       }
     }    
   }
