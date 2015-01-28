@@ -13,6 +13,7 @@ PImage[] Player2 = new PImage[4];
 PImage[] Zombie = new PImage[4];
 PImage[] PowerUp = new PImage[4];
 PImage Splash;
+PImage End;
 import ddf.minim.*;
 import ddf.minim.signals.*;
 import ddf.minim.analysis.*;
@@ -34,6 +35,11 @@ ArrayList<PowerUp> powerups = new ArrayList<PowerUp>();
 float zombieSpeed = .1f;
 float zombieSpawnRate = 1f;
 float spawnCounter = 0;
+int killCounter;
+int score;
+int scoreCounter;
+int scoreMultiplier;
+int[] oldHighScore;
 boolean[] keys = new boolean[526];
 int powerupCounter = 0;
 int powerGenerator = 500;
@@ -44,7 +50,7 @@ void setup()
 {
   if (devMode)
   {
-    size(800, 600);
+    size(1280, 1024);
   }
   else
   {
@@ -59,6 +65,7 @@ void setup()
     PowerUp[i] =  loadImage(i + "powerUp.png");
   }
   Splash = loadImage("splashscreen.png");
+  End = loadImage("gameover.png");
   minim = new Minim(this);
   player = minim.loadFile("houseinheartbeat.mp3");
   input = minim.getLineIn();
@@ -67,6 +74,11 @@ void setup()
   setUpObstacles();
   setUpZombies();
   menumode = 0;
+  scoreCounter = 0;
+  score = 1;
+  scoreMultiplier = 2;
+  killCounter = 0;
+  Highscore();
 }
 
 void draw()
@@ -75,10 +87,19 @@ void draw()
   if(menumode == 0)
   {
     image(Splash, 0, 0, width,height);
+    if(checkKey(players.get(0).start) || checkKey(players.get(1).start))
+    {
+      menumode = 1;
+    }
   }
-  if(menumode == 1)
+  else if(menumode == 1)
   { 
     background(255);
+    
+    if(scoreCounter == 1800)
+    {
+      scoreMultiplier++;
+    }
     
     for(Obstacle obstacle:obstacles)
     {
@@ -89,6 +110,10 @@ void draw()
     {
       players.get(i).update();
       players.get(i).display();
+      if(!players.get(0).playerAlive && !players.get(1).playerAlive)
+      {
+        menumode = 2;
+      }
     }
     
     for(int i = 0; i < zombies.size(); i++)
@@ -98,6 +123,8 @@ void draw()
       if(!zombies.get(i).zombieAlive)
       {
         zombies.remove(i);
+        score += scoreMultiplier;
+        killCounter++;
       }
     }
     
@@ -139,6 +166,15 @@ void draw()
     {
       spawnPowerUp();
     }
+  }
+  else if(menumode == 2)
+  {
+    image(End, 0, 0, width, height);
+    newHighScore();
+    fill(255,0,0);
+    text(score, width/2, height-height/4);
+    text(oldHighScore[0], (width - width/6), height/2);
+    text(killCounter, width/8, height/2);
   }
 }
 
@@ -362,5 +398,23 @@ void spawnPowerUp()
         powerups.add(p);
       }
     }    
+  }
+}
+
+void Highscore()
+{
+  String[] hBuffer = loadStrings("highscore.txt");
+  
+  oldHighScore = int(hBuffer);
+
+}
+
+void newHighScore()
+{
+  if(score > oldHighScore[0])
+  {
+    String[] hBuffer = new String[1];
+    hBuffer[0] = str(score);
+    saveStrings("highscore.txt",hBuffer);
   }
 }

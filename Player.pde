@@ -355,6 +355,7 @@ class Player extends GameObject
             {
               bullets.get(j).bulletAlive = false;
               playerToZombieSet = false;
+              killCounter++;
             }
           }
         }
