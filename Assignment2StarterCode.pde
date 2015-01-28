@@ -12,6 +12,7 @@ PImage[] Player1 = new PImage[4];
 PImage[] Player2 = new PImage[4];
 PImage[] Zombie = new PImage[4];
 PImage[] PowerUp = new PImage[4];
+PImage Splash;
 import ddf.minim.*;
 import ddf.minim.signals.*;
 import ddf.minim.analysis.*;
@@ -37,6 +38,7 @@ boolean[] keys = new boolean[526];
 int powerupCounter = 0;
 int powerGenerator = 500;
 int powerPicker = 0;
+int menumode;
 
 void setup()
 {
@@ -56,6 +58,7 @@ void setup()
     Zombie[i] = loadImage(i + "Zombie.png");
     PowerUp[i] =  loadImage(i + "powerUp.png");
   }
+  Splash = loadImage("splashscreen.png");
   minim = new Minim(this);
   player = minim.loadFile("houseinheartbeat.mp3");
   input = minim.getLineIn();
@@ -63,71 +66,80 @@ void setup()
   setUpPlayerControllers();
   setUpObstacles();
   setUpZombies();
+  menumode = 0;
 }
 
 void draw()
 {
-  background(255);
   
-  for(Obstacle obstacle:obstacles)
+  if(menumode == 0)
   {
-    obstacle.display();
+    image(Splash, 0, 0, width,height);
   }
-  
-  for(int i = 0; i < players.size(); i++)
-  {
-    players.get(i).update();
-    players.get(i).display();
-  }
-  
-  for(int i = 0; i < zombies.size(); i++)
-  {
-    zombies.get(i).update();
-    zombies.get(i).display();
-    if(!zombies.get(i).zombieAlive)
+  if(menumode == 1)
+  { 
+    background(255);
+    
+    for(Obstacle obstacle:obstacles)
     {
-      zombies.remove(i);
+      obstacle.display();
+    }
+    
+    for(int i = 0; i < players.size(); i++)
+    {
+      players.get(i).update();
+      players.get(i).display();
+    }
+    
+    for(int i = 0; i < zombies.size(); i++)
+    {
+      zombies.get(i).update();
+      zombies.get(i).display();
+      if(!zombies.get(i).zombieAlive)
+      {
+        zombies.remove(i);
+      }
+    }
+    
+    for(int i = 0; i < powerups.size(); i++)
+    {
+      powerups.get(i).update();
+      powerups.get(i).display();
+      if(!powerups.get(i).powerUpAlive)
+      {
+        powerups.remove(i);
+      }
+    }
+    
+    for(int i = 0; i < bullets.size(); i++)
+    {
+      bullets.get(i).display();
+      bullets.get(i).update();
+      if(!bullets.get(i).bulletAlive)
+      {
+        bullets.remove(i);
+      }
+    }
+    
+    if(spawnCounter > (60/zombieSpawnRate))
+    {
+      setUpZombies();
+      zombieSpawnRate *= 1.001;
+      spawnCounter = 0;
+      zombieSpeed *= 1.01;
+      if(zombieSpeed >= .8)
+      {
+        zombieSpeed = 1;
+      }
+    }
+    spawnCounter++;
+    
+    powerPicker = int(random(0,1001));
+    if(powerPicker == powerGenerator)
+    {
+      spawnPowerUp();
     }
   }
-  
-  for(int i = 0; i < powerups.size(); i++)
-  {
-    powerups.get(i).update();
-    powerups.get(i).display();
-    if(!powerups.get(i).powerUpAlive)
-    {
-      powerups.remove(i);
-    }
-  }
-  
-  for(int i = 0; i < bullets.size(); i++)
-  {
-    bullets.get(i).display();
-    bullets.get(i).update();
-    if(!bullets.get(i).bulletAlive)
-    {
-      bullets.remove(i);
-    }
-  }
-  
-  if(spawnCounter > (60/zombieSpawnRate))
-  {
-    setUpZombies();
-    zombieSpawnRate *= 1.001;
-    spawnCounter = 0;
-    zombieSpeed *= 1.01;
-    if(zombieSpeed >= .8)
-    {
-      zombieSpeed = 1;
-    }
-  }
-  spawnCounter++;
-  powerPicker = int(random(0,1001));
-  if(powerPicker == powerGenerator)
-  {
-    spawnPowerUp();
-  }
-  
 }
 
 void keyPressed()

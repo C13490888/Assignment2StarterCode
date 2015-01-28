@@ -12,7 +12,7 @@ class Bullet extends GameObject
   
   void update()
   {
-    float speed = 10.0f;
+    speed = 10.0f;
     if (direction == 0)
     {
       y -= speed;
