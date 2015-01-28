@@ -34,7 +34,7 @@ ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 ArrayList<PowerUp> powerups = new ArrayList<PowerUp>();
 float zombieSpeed = .1f;
 float zombieSpawnRate = 1f;
-float spawnCountwer = 0;
+float spawnCounter = 0;
 int killCounter;
 int score;
 int scoreCounter;
@@ -166,6 +166,8 @@ void draw()
     {
       spawnPowerUp();
     }
+    fill(255,0,0);
+    text("score: "+score, (width/2)-20, 10);
   }
   else if(menumode == 2)
   {
@@ -173,7 +175,7 @@ void draw()
     newHighScore();
     fill(255,0,0);
     textSize(20);
-    text(score, width/2, height-height/4);
+    text(score, (width/2)-20, height-height/4);
     if(score > oldHighScore[0])
     {
       text(score, (width - width/6), height/2);
