@@ -1,5 +1,6 @@
 class Player extends GameObject
 {
+  //controls
   char up;
   char down;
   char left;
@@ -7,6 +8,7 @@ class Player extends GameObject
   char start;
   char button1;
   char button2;
+  //other variables
   int index;
   float fireRate;
   float rateCounter;
@@ -55,6 +57,7 @@ class Player extends GameObject
   
   void update()
   {
+    //Collision against objects
     for(int j = 0; j < obstacles.size(); j++)
     {
       if((pos.x >= obstacles.get(j).pos.x && pos.x <= obstacles.get(j).pos.x + 50) || (pos.x + 20 >= obstacles.get(j).pos.x && pos.x + 20 <= obstacles.get(j).pos.x + 50))
@@ -81,6 +84,7 @@ class Player extends GameObject
       }
     }
     
+    //Wraps around if walking off edge of screen
     if(pos.x > width)    
     {
       pos.x = 0;
@@ -98,8 +102,10 @@ class Player extends GameObject
       pos.y = height;
     }  
     
+    //Controls for only if the pplayer is alive
     if(playerAlive)
     {
+      //movement
       if (checkKey(up))
       {
         pos.y -= speed;
@@ -125,6 +131,7 @@ class Player extends GameObject
         Sprite = sprite[3];
       }
       
+      //checks for collision against bullets, this kills the player
       for(int j = 0; j < bullets.size(); j++)
       {
         if(bullets.get(j).x+1 >= pos.x && bullets.get(j).x-1 <= pos.x +20)
@@ -140,6 +147,7 @@ class Player extends GameObject
         }
       }
       
+      //checks for collision against zombies, this kills the player
       for(int j = 0; j < zombies.size(); j++)
       {
         if((pos.x >= zombies.get(j).pos.x && pos.x <= zombies.get(j).pos.x + 20) || (pos.x + 20 >= zombies.get(j).pos.x && pos.x + 20 <= zombies.get(j).pos.x + 20))
@@ -168,6 +176,7 @@ class Player extends GameObject
             Sprite = Zombie[0];
           }
         }
+        //this changes the zombies target if the other player is closer
         if(zombies.get(j).target == 0)
         {
           if(players.get(1).playerAlive)
@@ -189,7 +198,7 @@ class Player extends GameObject
           }
         }
       }
-      
+      //Shooting code and start button
       if (checkKey(start))
       {
         println("Player " + index + " start");
@@ -229,14 +238,15 @@ class Player extends GameObject
       {
         println("Player " + index + " butt2");
       }   
-      rateCounter++; 
+      rateCounter++; //for how much the player can shoot
     }
+    //This code is for when a player turns into a zombie
     if(!playerAlive)
     {
       if(!playerToZombieSet)
       {
         for(int i = 0; i < zombies.size(); i++)
-        {
+        { //Switches zombies targets
           if(zombies.get(i).target == index)
           {
             if(index == 0)
@@ -251,6 +261,7 @@ class Player extends GameObject
             }
           }
         }
+        //This code uses booleans and wwhiles to make sure when the player is killed they spawn a certain distance away from the other player, objects etc.
         boolean playerGapExists = false;
         while(playerGapExists == false)
         {
@@ -289,6 +300,7 @@ class Player extends GameObject
           }
         } 
       }
+      //movement for player zombie
       if (checkKey(up))
       {
         pos.y -= speed;
@@ -318,7 +330,8 @@ class Player extends GameObject
       {
         println("Player " + index + " start");
       }
-     
+      
+      //This code checks if the player zombie collides with the other player. If so kills the other player, ending the game
       if((pos.x >= players.get(playerTarget).pos.x && pos.x <= players.get(playerTarget).pos.x + 20) || (pos.x + 20 >= players.get(playerTarget).pos.x && pos.x + 20 <= players.get(playerTarget).pos.x + 20))
       {
         if(pos.y >= players.get(playerTarget).pos.y && pos.y <= players.get(playerTarget).pos.y + 20)
@@ -345,7 +358,7 @@ class Player extends GameObject
           players.get(playerTarget).Sprite = Zombie[0];
         }
       }
-      
+      //Checks if the player zombie is shot by a bullet, if so respawns them
       for(int j = 0; j < bullets.size(); j++)
       {
         if(bullets.get(j).x+1 >= pos.x && bullets.get(j).x-1 <= pos.x +20)

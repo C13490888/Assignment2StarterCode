@@ -1,4 +1,4 @@
-class GameObject
+class GameObject //SuperClass
 {
   PVector pos;
   float speed;

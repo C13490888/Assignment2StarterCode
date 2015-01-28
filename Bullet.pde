@@ -13,6 +13,7 @@ class Bullet extends GameObject
   void update()
   {
     speed = 10.0f;
+    //Keeps the bullet moving
     if (direction == 0)
     {
       y -= speed;
@@ -30,6 +31,7 @@ class Bullet extends GameObject
       x += speed;
     }
     
+    //Checks if bullet hits an obstacle
     for(int j = 0; j < obstacles.size(); j++)
     {
       if(x+1 >= obstacles.get(j).pos.x && x-1 <= obstacles.get(j).pos.x +50)
@@ -40,6 +42,7 @@ class Bullet extends GameObject
         }
       }
     }
+    //Checks if bullet hits a zombie
     for(int j = 0; j < zombies.size(); j++)
     {
       if(x+1 >= zombies.get(j).pos.x && x-1 <= zombies.get(j).pos.x +20)
@@ -52,27 +55,28 @@ class Bullet extends GameObject
       }
     }
     
-    
+    //Makes Bullets wrap around
     if(x > width)    
     {
-    x = 0;
+      x = 0;
     }
     if(x < 0)    
     {
-    x = width;
+      x = width;
     }    
     if(y > height)    
     {
-    y = 0;
+      y = 0;
     }   
     if(y < 0)    
     {
-    y = height;
+      y = height;
     }  
     
   }
   void display()
   {
+    //Draws/moves the bullet
     pushMatrix();
     fill(0);
     stroke(0);

@@ -30,12 +30,13 @@ class PowerUp extends GameObject
   
   void update()
   {
-    
+    //Makes powers available for pickup for 15 seconds
     if(powerTimer == 900)
     {
       powerUpAlive = false;
     }
-
+    
+    //checks collision for players for them to be activated
     for(int j = 0; j < players.size(); j++)
     {
       if((pos.x >= players.get(j).pos.x && pos.x <= players.get(j).pos.x + 20) || (pos.x + 20 >= players.get(j).pos.x && pos.x + 20 <= players.get(j).pos.x + 20))
@@ -70,6 +71,7 @@ class PowerUp extends GameObject
       }
     }
     
+    //checks which power has been activated
     if(powerSet)
     {
       if(Sprite == PowerUp[0])
@@ -91,6 +93,7 @@ class PowerUp extends GameObject
       powerSet = false;
     }
     
+    //resets the speed of zombies and slows all current zombies
     if(speedDown)
     {
       for(int i = 0; i < zombies.size(); i++)
@@ -99,10 +102,12 @@ class PowerUp extends GameObject
         zombieSpeed = .1f;
       }
     }
+    //Increases the player who activated it's speed
     else if(speedUp)
     {
        players.get(playerActivated).speed *= 1.5;
     }
+    //kills half of the zombies and resets the spawn rate.
     else if(spawnDown)
     {
       for(int i = 0; i < zombies.size()/2; i++)
@@ -111,9 +116,14 @@ class PowerUp extends GameObject
         zombieSpawnRate = 1f;
       }
     }
+    //Spawns another half amount of zombies and increases spawn rate
     else if(spawnUp)
     {
       zombieSpawnRate *= 1.5;
+      for(int i = 0; i < zombies.size()/2; i++)
+      {
+        setUpZombies();
+      }
     }
     
     powerTimer++;
